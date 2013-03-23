@@ -51,7 +51,7 @@ Since Spotify is a service "in the cloud" and it's all about music, people need 
 
 ## Design process
 
-I the kind of designer who place myself closer to "architect" than "artist" in the spectrum of art–science ratio. Sketching on good old paper with a graphite pencil beats all (early-stages) prototyping software I've tried. It's easy to interact with and everyone can join in.
+I'm the kind of designer who place myself closer to "architect" than "artist" in the spectrum of art–science ratio. Sketching on good old paper with a graphite pencil beats all (early-stages) prototyping software I've tried. It's easy to interact with and everyone can join in.
 
 [![iPhone paper sketch](http://farm5.static.flickr.com/4152/4949861138_7023347479_z.jpg)](http://farm5.static.flickr.com/4152/4949861138_7023347479_b.jpg)
 
