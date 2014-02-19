@@ -71,6 +71,7 @@ var ref_date = new Date('Wed Jan 29 2014 18:17:00 GMT-0800 (PST)');
 
 window.addEventListener("load",function() {
   // ios hide address bar
+  document.body.style.height = (window.innerHeight + 2) + 'px';
   setTimeout(function(){
     window.scrollTo(0, 1);
   }, 0);
