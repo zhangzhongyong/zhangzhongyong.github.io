@@ -5,9 +5,15 @@
     <meta name="viewport" content="width=720">
     <style type="text/css">
 
+body {
+  background:white;
+}
+
 svg {
-  width:720px;
-  height:720px;
+  position:fixed;
+  left:0; top:0; right:0; bottom:0;
+  /*width:730px;
+  height:730px;*/
 }
 
 svg path.arc {
@@ -36,6 +42,18 @@ svg text.arc textPath {
   spacing: exact;
 }
 
+body.dark { background:black; }
+body.dark svg path.arc.bg { stroke:#333; }
+body.dark svg text.arc { fill:black; }
+body.dark svg circle.bg { fill:#ff7c7c; }
+body.dark svg path.arc.seconds { stroke:#ffaa7c; }
+body.dark svg path.arc.minutes { stroke:#ffd87c; }
+body.dark svg path.arc.hours { stroke:#fff77c; }
+body.dark svg path.arc.days { stroke:#c3f394; }
+body.dark svg path.arc.weeks { stroke:#8df1b5; }
+body.dark svg path.arc.months { stroke:#88e3f4; }
+body.dark svg path.arc.years { stroke:#94b9f1; }
+
     </style>
   </head>
   <body>
@@ -43,6 +61,17 @@ svg text.arc textPath {
     <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     </svg>
     <script>
+
+// var ref_date = new Date('2014-01-29 18:17:00 -0800');
+// var ref_date = new Date('Wed Jan 29 2014 18:17:00 GMT-0800 (PST)');
+// var ref_date = new Date('Wed Jan 9 2010 18:17:00 GMT-0800 (PST)');
+var ref_date = new Date('1983-05-17T03:00:00Z');
+// var ref_date = new Date('2013-05-17T00:00:00Z');
+
+var qs = document.location.search.toLowerCase();
+if (qs.indexOf('dark') !== -1) {
+  document.body.className = 'dark';
+}
 
 if (!window.requestAnimationFrame) {
   window.requestAnimationFrame = window.webkitRequestAnimationFrame ||
@@ -103,9 +132,28 @@ function animate(opt) {
   requestAnimationFrame(draw);
 }
 
+
 var arc_g = svg_create('g');
 svg.appendChild(arc_g);
-arc_g.setAttribute('transform', 'translate(60 60)');
+
+var svg_size = 720;
+var arc_g_offs = 60;
+var base_scale = 0.9;
+
+function resize_scene() {
+  var win_size = Math.min(window.innerWidth, window.innerHeight);
+  var scale = (win_size / svg_size) * base_scale;
+  var scaled_size = svg_size * scale;
+  var w_offs = (window.innerWidth - scaled_size) / 2;
+  var h_offs = (window.innerHeight - scaled_size) / 2;
+
+  arc_g.setAttribute('transform',
+    'translate('+((arc_g_offs*scale) + w_offs)+' '+((arc_g_offs*scale) + h_offs)+') '+
+    'scale('+scale+')');
+}
+resize_scene();
+window.addEventListener('resize', resize_scene);
+
 
 function create_arc(x, y, radius, label, maxval, update_interval, get_value) {
 
@@ -115,7 +163,7 @@ function create_arc(x, y, radius, label, maxval, update_interval, get_value) {
   arc_g.appendChild(bg_path);
 
   var path = svg_create('path');
-  path.setAttribute('class', 'arc');
+  path.setAttribute('class', 'arc '+label);
   path.draw = function(value) {
     this.setAttribute('d', arc_path(value, maxval, x, y, radius));
   };
@@ -146,39 +194,40 @@ function create_arc(x, y, radius, label, maxval, update_interval, get_value) {
   }
 
   var prev_value = get_value();
-  path.draw(prev_value);
 
-  var update = function (){
+  var update = function (is_initial){
     var from = prev_value;
     prev_value = get_value();
     if (Math.round(prev_value) === maxval) {
       prev_value = maxval;
     }
-    if (textPathText !== undefined) {
-      textPathText.nodeValue = Math.round(prev_value) + ' ' + (Math.round(prev_value) === 1 ? label.substr(0,label.length-1) : label);
-    }
-    if (from != prev_value) {
-      animate({
-        fps: 30,
-        from: from, to: prev_value,
-        duration: 200,
-        ondraw: function (value) { path.draw(value); },
-        onend: function() {
-          if (prev_value === maxval) {
-            prev_value = 0;
-          }
-        },
-      });
+    if (is_initial || from !== prev_value) {
+      if (textPathText !== undefined) {
+        textPathText.nodeValue = Math.round(prev_value) + ' ' + (Math.round(prev_value) === 1 ? label.substr(0,label.length-1) : label);
+      }
+      if (is_initial && from === prev_value) {
+        path.draw(prev_value);
+      } else {
+        animate({
+          // fps: 30,
+          from: from, to: prev_value,
+          duration: (prev_value === 0) ? 900 : 400, // slow when resetting, fast when progressing
+          ondraw: function (value) { path.draw(value); },
+          onend: function() {
+            if (prev_value === maxval) {
+              prev_value = 0;
+            }
+          },
+        });
+      }
     }
   };
-  update();
+  update(true);
   setInterval(update, update_interval);
 
   return path;
 }
 
-// var ref_date = new Date('2014-01-29 18:17:00 -0800');
-var ref_date = new Date('Wed Jan 29 2014 18:17:00 GMT-0800 (PST)');
 var d = new Date(new Date - ref_date);
 
 var x = 300;
@@ -190,25 +239,29 @@ var easeOutQuad = function (curr_time, start_value, value_change, duration) {
 };
 
 var hundreds = (function(){
-  // <circle cx="50" cy="50" r="40" stroke="black" stroke-width="3" fill="red" />
   var bg_circle = svg_create('circle');
   bg_circle.setAttribute('class', 'bg');
   bg_circle.setAttribute('cx', x);
   bg_circle.setAttribute('cy', y);
+  var prev_p;
   var draw = function draw(curr_time) {
-    setTimeout(function() { window.requestAnimationFrame(draw); }, 1000 / 30);
-    var p = (new Date(new Date - ref_date)).getMilliseconds() / 1000;
-    var value = 40 * p;
-    if (Math.ceil(value) >= 40) {
-      value = 40;
+    // setTimeout(function() { window.requestAnimationFrame(draw); }, 1000 / 50);
+    window.requestAnimationFrame(draw);
+    var p = Math.round( ((new Date(new Date - ref_date)).getMilliseconds() / 1000) * 256 ) / 256;
+    if (prev_p != p) {
+      var value = 40 - (40 * p);
+      if (Math.ceil(value) >= 40) {
+        value = 40;
+      }
+      bg_circle.setAttribute('r', value);
+      prev_p = p;
     }
-    bg_circle.setAttribute('r', value);
   }
   draw(0);
-  // bg_circle.setAttribute('r', 40);
   arc_g.appendChild(bg_circle);
   return bg_circle;
 })();
+
 
 var seconds = function() {
   return Math.floor((new Date - ref_date) / 1000) % 60;
