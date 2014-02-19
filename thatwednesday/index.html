@@ -161,7 +161,7 @@ function create_arc(x, y, radius, label, maxval, update_interval, get_value) {
       animate({
         fps: 30,
         from: from, to: prev_value,
-        duration: 100,
+        duration: 200,
         ondraw: function (value) { path.draw(value); },
         onend: function() {
           if (prev_value === maxval) {
