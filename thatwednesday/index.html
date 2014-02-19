@@ -1,0 +1,246 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>That Wednesday</title>
+    <style type="text/css">
+
+svg {
+  width:700px;
+  height:700px;
+}
+
+svg path.arc {
+  stroke:salmon;
+  fill:none;
+  stroke-width:40;
+}
+svg path.arc.bg {
+  stroke:#eee;
+}
+svg circle.bg {
+  fill:salmon;
+  stroke:none;
+}
+
+svg text.arc {
+  fill: white;
+  font-size:28;
+  font-family: helvetica,sans-serif;
+  font-weight: lighter;
+  baseline-shift: sub;
+  alignment-baseline: hanging;
+}
+svg text.arc textPath {
+  method: stretch;
+  spacing: exact;
+}
+
+    </style>
+  </head>
+  <body>
+    <!-- viewBox="0 0 1000 300"-->
+    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    </svg>
+    <script>
+
+if (!window.requestAnimationFrame) {
+  window.requestAnimationFrame = window.webkitRequestAnimationFrame ||
+                                 window.mozRequestAnimationFrame;
+  window.cancelAnimationFrame = window.webkitCancelAnimationFrame ||
+                                window.mozCancelAnimationFrame;
+}
+
+var svg = document.querySelector('svg');
+function svg_create(nodeName) {
+  return svg.ownerDocument.createElementNS('http://www.w3.org/2000/svg', nodeName);
+}
+function svg_text(text) {
+  return svg.ownerDocument.createTextNode(text);
+}
+
+function arc_path(value, total, x, y, R) {
+  var center;
+  var alpha = 360 / total * value,
+      a = (90 - alpha) * Math.PI / 180,
+      path;
+  x = x + R * Math.cos(a);
+  y = y - R * Math.sin(a);
+  if (total == value) {
+    path = "M300,"+ (300 - R) +" A"+ R+","+ R+",0,1,1,299.99,"+ (300 - R);
+  } else {
+    if (alpha > 180) {
+      center = '1';
+    } else {
+      center = '0';
+    }
+    path = "M300,"+ (300 - R) +" A"+ R+","+ R+",0," + center +",1,"+ x+","+ y;
+  }
+  return path;
+}
+
+function animate(opt) {
+  var start_time = null;
+  var draw = function draw(scene_time) {
+    if (start_time === null) {
+      start_time = scene_time;
+    }
+    var progress = (scene_time - start_time) / opt.duration;
+    if (progress >= 1) {
+      opt.ondraw(opt.to);
+      if (typeof opt.onend === 'function') opt.onend();
+      return;
+    } else {
+      opt.ondraw(opt.from + ((opt.to - opt.from) * progress));
+    }
+    if (opt.fps) {
+      setTimeout(function() { window.requestAnimationFrame(draw); }, 1000 / opt.fps);
+    } else {
+      window.requestAnimationFrame(draw);
+    }
+  };
+
+  requestAnimationFrame(draw);
+}
+
+var arc_g = svg_create('g');
+svg.appendChild(arc_g);
+arc_g.setAttribute('transform', 'translate(50 50)');
+
+function create_arc(x, y, radius, label, maxval, update_interval, get_value) {
+
+  var bg_path = svg_create('path');
+  bg_path.setAttribute('class', 'arc bg');
+  bg_path.setAttribute('d', arc_path(maxval, maxval, x, y, radius));
+  arc_g.appendChild(bg_path);
+
+  var path = svg_create('path');
+  path.setAttribute('class', 'arc');
+  path.draw = function(value) {
+    this.setAttribute('d', arc_path(value, maxval, x, y, radius));
+  };
+  arc_g.appendChild(path);
+
+
+  var defs, text, text_path, textPath, textPathText;
+  if (label) {
+    defs = svg_create('defs');
+    text_path = svg_create('path');
+    text_path.id = 'path-' + radius + '-' + maxval;
+    text_path.setAttribute('d', arc_path(maxval, maxval, x, y, radius-10));
+    defs.appendChild(text_path);
+    arc_g.appendChild(defs);
+
+    text = svg_create('text');
+    text.setAttribute('class', 'arc');
+    
+    textPath = svg_create('textPath');
+    textPath.setAttribute('startOffset', '4');
+    textPath.setAttribute('method', 'stretch');
+    textPath.setAttribute('spacing', 'exact');
+    textPath.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', '#' + text_path.id);
+    textPathText = textPath.appendChild(svg_text(label));
+    
+    text.appendChild(textPath);
+    arc_g.appendChild(text);
+  }
+
+  var prev_value = get_value();
+  path.draw(prev_value);
+
+  var update = function (){
+    var from = prev_value;
+    prev_value = get_value();
+    if (Math.round(prev_value) === maxval) {
+      prev_value = maxval;
+    }
+    if (textPathText !== undefined) {
+      textPathText.nodeValue = Math.round(prev_value) + ' ' + (Math.round(prev_value) === 1 ? label.substr(0,label.length-1) : label);
+    }
+    if (from != prev_value) {
+      animate({
+        fps: 30,
+        from: from, to: prev_value,
+        duration: 100,
+        ondraw: function (value) { path.draw(value); },
+        onend: function() {
+          if (prev_value === maxval) {
+            prev_value = 0;
+          }
+        },
+      });
+    }
+  };
+  update();
+  setInterval(update, update_interval);
+
+  return path;
+}
+
+// var ref_date = new Date('2014-01-29 18:17:00 -0800');
+var ref_date = new Date('Wed Jan 29 2014 18:17:00 GMT-0800 (PST)');
+var d = new Date(new Date - ref_date);
+
+var x = 300;
+var y = 300;
+
+var easeOutQuad = function (curr_time, start_value, value_change, duration) {
+  curr_time /= duration;
+  return -value_change * curr_time*(curr_time-2) + start_value;
+};
+
+var hundreds = (function(){
+  // <circle cx="50" cy="50" r="40" stroke="black" stroke-width="3" fill="red" />
+  var bg_circle = svg_create('circle');
+  bg_circle.setAttribute('class', 'bg');
+  bg_circle.setAttribute('cx', x);
+  bg_circle.setAttribute('cy', y);
+  var draw = function draw(curr_time) {
+    setTimeout(function() { window.requestAnimationFrame(draw); }, 1000 / 30);
+    var p = (new Date(new Date - ref_date)).getMilliseconds() / 1000;
+    var value = 40 * p;
+    if (Math.ceil(value) === 40) {
+      value = 40;
+    }
+    bg_circle.setAttribute('r', value);
+  }
+  draw(0);
+  // bg_circle.setAttribute('r', 40);
+  arc_g.appendChild(bg_circle);
+  return bg_circle;
+})();
+
+var seconds = function() {
+  return Math.floor((new Date - ref_date) / 1000) % 60;
+};
+var minutes = function() {
+  return Math.floor((new Date - ref_date) / (1000 * 60)) % 60;
+};
+var hours = function() {
+  return Math.floor((new Date - ref_date) / (1000 * 60 * 60)) % 24;
+};
+var days = function() {
+  return Math.floor((new Date - ref_date) / (1000 * 60 * 60 * 24)) % 7;
+};
+var weeks = function() {
+  return Math.floor((new Date - ref_date) / (1000 * 60 * 60 * 24 * 7)) % 4;
+};
+var months = function() {
+  return Math.floor((new Date - ref_date) / (1000 * 60 * 60 * 24 * 31)) % 12;
+};
+
+
+create_arc(x, y, 65, 'seconds', 60, 100, seconds);
+create_arc(x, y, 110, 'minutes', 60, 100, minutes);
+create_arc(x, y, 155, 'hours', 24, 100, hours);
+create_arc(x, y, 200, 'days', 7, 100, days);
+create_arc(x, y, 245, 'weeks', 4, 1000, weeks);
+create_arc(x, y, 290, 'months', 12, 1000, months);
+
+setInterval(function (){
+  document.title = [months(), weeks(), days(), hours(), minutes(), seconds() ].join(':');
+}, 1000);
+
+
+    </script>
+  </body>
+</html>
