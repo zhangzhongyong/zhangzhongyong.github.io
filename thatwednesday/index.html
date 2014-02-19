@@ -2,12 +2,12 @@
   <head>
     <meta charset="utf-8">
     <title>That Wednesday</title>
-    <meta name="viewport" content="width=700">
+    <meta name="viewport" content="width=720">
     <style type="text/css">
 
 svg {
-  width:700px;
-  height:700px;
+  width:720px;
+  height:720px;
 }
 
 svg path.arc {
@@ -105,7 +105,7 @@ function animate(opt) {
 
 var arc_g = svg_create('g');
 svg.appendChild(arc_g);
-arc_g.setAttribute('transform', 'translate(50 50)');
+arc_g.setAttribute('transform', 'translate(60 60)');
 
 function create_arc(x, y, radius, label, maxval, update_interval, get_value) {
 
@@ -199,7 +199,7 @@ var hundreds = (function(){
     setTimeout(function() { window.requestAnimationFrame(draw); }, 1000 / 30);
     var p = (new Date(new Date - ref_date)).getMilliseconds() / 1000;
     var value = 40 * p;
-    if (Math.ceil(value) === 40) {
+    if (Math.ceil(value) >= 40) {
       value = 40;
     }
     bg_circle.setAttribute('r', value);
@@ -228,6 +228,9 @@ var weeks = function() {
 var months = function() {
   return Math.floor((new Date - ref_date) / (1000 * 60 * 60 * 24 * 31)) % 12;
 };
+var years = function() {
+  return Math.floor((new Date - ref_date) / (1000 * 60 * 60 * 24 * 365)) % 75;
+};
 
 
 create_arc(x, y, 65, 'seconds', 60, 100, seconds);
@@ -236,6 +239,7 @@ create_arc(x, y, 155, 'hours', 24, 100, hours);
 create_arc(x, y, 200, 'days', 7, 100, days);
 create_arc(x, y, 245, 'weeks', 4, 1000, weeks);
 create_arc(x, y, 290, 'months', 12, 1000, months);
+create_arc(x, y, 335, 'years', 85, 1000, years);
 
 setInterval(function (){
   document.title = [months(), weeks(), days(), hours(), minutes(), seconds() ].join(':');
