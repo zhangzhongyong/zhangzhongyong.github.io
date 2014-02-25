@@ -193,6 +193,7 @@ function resize_scene() {
 }
 resize_scene();
 window.addEventListener('resize', resize_scene);
+window.addEventListener('orientationchange', resize_scene);
 
 
 function create_arc(x, y, radius, label, maxval, update_interval, get_value) {
