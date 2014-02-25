@@ -236,6 +236,18 @@ function create_arc(x, y, radius, label, maxval, update_interval, get_value) {
   // }
 
   var about_to_close_threshold = 7.5; // px distance from head and tail of the progress arc
+  var is_about_to_close;
+  var update_about_to_close = function(value) {
+    var about_to_close = radius - (radius * (value / maxval)) < about_to_close_threshold;
+    if (is_about_to_close !== about_to_close) {
+      is_about_to_close = about_to_close;
+      if (is_about_to_close) {
+        text2.setAttribute('class', 'arc hidden');
+      } else {
+        text2.setAttribute('class', 'arc');
+      }
+    }
+  };
 
   var draw_path = function(value) {
     path.setAttribute('d', arc_path(value, maxval, x, y, radius));
@@ -244,11 +256,7 @@ function create_arc(x, y, radius, label, maxval, update_interval, get_value) {
 
   var late_draw_path = function(value) {
     text_path2.setAttribute('d', arc_path(value, maxval, x, y, radius-10));
-    if (radius - (radius * (value / maxval)) < about_to_close_threshold) {
-      text2.setAttribute('class', 'arc hidden');
-    } else {
-      text2.setAttribute('class', 'arc');
-    }
+    update_about_to_close(value);
   };
 
   var update_labels = function(value) {
@@ -259,7 +267,10 @@ function create_arc(x, y, radius, label, maxval, update_interval, get_value) {
         textPathText.nodeValue = label;
       } else {
         text.setAttribute('class', 'arc');
-        var is_about_to_close = radius - (radius * (value / maxval)) < about_to_close_threshold;
+        update_about_to_close(value);
+        if (is_about_to_close) {
+          text2.setAttribute('class', 'arc hidden');
+        }
         textPathText.nodeValue = is_about_to_close ? label_value + ' ' + label : label_value;
       }
     }
