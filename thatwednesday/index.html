@@ -4,14 +4,16 @@
     <title>That Wednesday</title>
     <meta name="viewport" content="width=720">
     <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="apple-touch-icon-precomposed" sizes="57x57" href="apple-touch-icon-57x57-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="apple-touch-icon-72x72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="apple-touch-icon-114x114-precomposed.png">
     <style type="text/css">
 
 @font-face {
   font-family: 'M+ 1c';
   font-style: normal;
   font-weight: 300;
-  /*src: local('mplus-2c-light'),
-       local('M+ 2c light'),
+  /*src: local('mplus-2c-light'), local('M+ 2c light'),
        url('/res/mplus-2c-light.ttf') format('truetype');*/
   src: url('../res/mplus-2c-light.ttf') format('truetype');
 }
@@ -101,8 +103,14 @@ var ref_date = new Date('Wed Jan 29 2014 18:17:00 GMT-0800 (PST)');
 // ref_date = new Date('1983-05-17T03:00:00Z');
 
 var qs = document.location.search.toLowerCase();
+var meta_apple_mobile_web_app_status_bar_style = document.createElement('meta');
+meta_apple_mobile_web_app_status_bar_style.setAttribute('name', 'apple-mobile-web-app-status-bar-style');
+document.querySelector('head').appendChild(meta_apple_mobile_web_app_status_bar_style);
 if (qs.indexOf('dark') !== -1) {
   document.body.className = 'dark';
+  meta_apple_mobile_web_app_status_bar_style.setAttribute('content', 'black');
+} else {
+  meta_apple_mobile_web_app_status_bar_style.setAttribute('content', 'default');
 }
 
 if (!window.requestAnimationFrame) {
