@@ -1,6 +1,4 @@
 CACHE MANIFEST
-
-# Explicitly cached
-CACHE:
+# v2
 index.html
 ../res/mplus-2c-light.ttf
