@@ -58,7 +58,7 @@ svg text.arc.hidden {
   opacity:0;
 }
 svg text.arc.zero {
-  opacity:0.7;
+  opacity:0.3;
 }
 svg text.arc textPath {
   method: stretch;
@@ -75,8 +75,8 @@ body { background:white; }
   svg path.arc.hours { stroke:#92e16c; }
   svg path.arc.days { stroke:#5ee697; }
   svg path.arc.weeks { stroke:#69e4dd; }
-  svg path.arc.months { stroke:#59a3fe; }
-  svg path.arc.years { stroke:#b6a2ea; }
+  svg path.arc.months { stroke:#79c2ff; }
+  svg path.arc.years { stroke:#cbb4f5; }
 
 /* dark color scheme */
 body.dark { background:black; }
@@ -100,6 +100,7 @@ body.dark { background:black; }
     <script>
 
 var ref_date = new Date('Wed Jan 29 2014 18:17:00 GMT-0800 (PST)');
+// ref_date = new Date('2000-05-17T00:00:00Z');
 // ref_date = new Date('1983-05-17T03:00:00Z');
 
 var qs = document.location.search.toLowerCase();
@@ -196,7 +197,9 @@ window.addEventListener('resize', resize_scene);
 window.addEventListener('orientationchange', resize_scene);
 
 
-function create_arc(x, y, radius, label, maxval, update_interval, get_value) {
+function create_arc(radius, label, maxval, update_interval, get_value) {
+  var x = 300;
+  var y = 300;
 
   var bg_path = svg_create('path');
   bg_path.setAttribute('class', 'arc bg');
@@ -322,9 +325,6 @@ function create_arc(x, y, radius, label, maxval, update_interval, get_value) {
 
 var d = new Date(new Date - ref_date);
 
-var x = 300;
-var y = 300;
-
 var easeOutQuad = function (curr_time, start_value, value_change, duration) {
   curr_time /= duration;
   return -value_change * curr_time*(curr_time-2) + start_value;
@@ -344,14 +344,15 @@ var easeOutQuad = function (curr_time, start_value, value_change, duration) {
 var hundreds = (function(){
   var bg_circle = svg_create('circle');
   bg_circle.setAttribute('class', 'bg hundreds');
-  bg_circle.setAttribute('cx', x);
-  bg_circle.setAttribute('cy', y);
+  bg_circle.setAttribute('cx', 300);
+  bg_circle.setAttribute('cy', 300);
   var prev_p;
   var draw = function draw(curr_time) {
     // setTimeout(function() { window.requestAnimationFrame(draw); }, 1000 / 50);
     window.requestAnimationFrame(draw);
     var p = Math.round( ((new Date(new Date - ref_date)).getMilliseconds() / 1000) * 256 ) / 256;
-    if (prev_p != p) {
+
+    if (prev_p !== p) {
       var value = 40 - (40 * p);
       if (Math.ceil(value) >= 40) {
         value = 40;
@@ -369,64 +370,69 @@ var hundreds = (function(){
 })();
 
 
-var time_deltas = {};
-function update_time_deltas(){
-  var t = (new Date - ref_date) / 1000;
-  var MINUTE = 60,
-      HOUR = MINUTE * 60
-      DAY = HOUR * 24,
-      WEEK = DAY * 7,
-      MONTH = (DAY * 365) / 12,
-      YEAR = DAY * 365;
+function time_diff(date1, date2) {
+  var future_date, past_date;
+  date1 < date2 ? (past_date = date1, future_date = date2)
+                : (past_date = date2, future_date = date1);
+  var D = {},
+      t = future_date - past_date,
+      SECOND = 1000,
+      MINUTE = 6e4,
+      HOUR   = 36e5,   // 60 minutes
+      DAY    = 864e5,  // 24 hours
+      WEEK   = 6048e5, // 7 days,
+      MONTH = YEAR = 0, MONTH_DAYS = [31,28,31,30,31,30,31,31,30,31,30,31],
+      is_leap_year = function(y) { return y % 400 === 0 || (y % 100 !== 0 && y % 4 === 0); },
+      y = past_date.getFullYear(),
+      y_future = future_date.getFullYear(),
+      m;
 
-  time_deltas.years = Math.floor(t / YEAR);
-  t -= time_deltas.years * YEAR;
-  time_deltas.months = Math.floor(t / MONTH);
-  t -= time_deltas.months * MONTH;
-  time_deltas.weeks = Math.floor(t / WEEK);
-  t -= time_deltas.weeks * WEEK;
-  time_deltas.days = Math.floor(t / DAY);
-  t -= time_deltas.days * DAY;
-  time_deltas.hours = Math.floor(t / HOUR);
-  t -= time_deltas.hours * HOUR;
-  time_deltas.minutes = Math.floor(t / MINUTE);
-  t -= time_deltas.minutes * MINUTE;
-  time_deltas.seconds = Math.floor(t);
+  for (D.years = 0; y < y_future; ) {
+    YEAR = (is_leap_year(y++) ? 366 : 365) * DAY;
+    if (t < YEAR) { break; }
+    t -= YEAR;
+    ++D.years;
+  }
+
+  D.months = 0;
+  for (m = past_date.getMonth(); t; ) {
+    (m === 11) ? (m = 0, y += 1) : m += 1;
+    MONTH = (m === 1 && is_leap_year(y)) ? 29 : MONTH_DAYS[m] * DAY;
+    if (t < MONTH) { break; }
+    t -= MONTH;
+    ++D.months;
+  }
+
+  D.weeks = Math.floor(t / WEEK);
+  t -= D.weeks * WEEK;
+  D.days = Math.floor(t / DAY);
+  t -= D.days * DAY;
+  D.hours = Math.floor(t / HOUR);
+  t -= D.hours * HOUR;
+  D.minutes = Math.floor(t / MINUTE);
+  t -= D.minutes * MINUTE;
+  D.seconds = Math.floor(t / SECOND);
+  t -= D.seconds * SECOND;
+  D.milliseconds = t;
+
+  return D;
 }
-// setInterval(update_time_deltas, 1000);
+
+
+var time_deltas = {};
+function update_time_deltas() {
+  time_deltas = time_diff(ref_date, new Date);
+}
 update_time_deltas();
 
-
-var seconds = function() {
-  return time_deltas.seconds; //Math.floor((new Date - ref_date) / 1000) % 60;
-};
-var minutes = function() {
-  return time_deltas.minutes; //Math.floor((new Date - ref_date) / (1000 * 60)) % 60;
-};
-var hours = function() {
-  return time_deltas.hours; //Math.floor((new Date - ref_date) / (1000 * 60 * 60)) % 24;
-};
-var days = function() {
-  return time_deltas.days; //Math.floor((new Date - ref_date) / (1000 * 60 * 60 * 24)) % 7;
-};
-var weeks = function() {
-  return time_deltas.weeks; //Math.floor((new Date - ref_date) / (1000 * 60 * 60 * 24 * 7)) % 4;
-};
-var months = function() {
-  return time_deltas.months; //Math.floor((new Date - ref_date) / (1000 * 60 * 60 * 24 * 31)) % 12;
-};
-var years = function() {
-  return time_deltas.years; //Math.floor((new Date - ref_date) / (1000 * 60 * 60 * 24 * 365)) % 75;
-};
-
-
-create_arc(x, y, 65, 'seconds', 60, 100, seconds);
-create_arc(x, y, 110, 'minutes', 60, 100, minutes);
-create_arc(x, y, 155, 'hours', 24, 100, hours);
-create_arc(x, y, 200, 'days', 7, 100, days);
-create_arc(x, y, 245, 'weeks', 4, 1000, weeks);
-create_arc(x, y, 290, 'months', 12, 1000, months);
-create_arc(x, y, 335, 'years', 85, 1000, years);
+//         radius, label,     maxval, update_interval, get_value
+create_arc(65,     'seconds', 60,     100,  function() { return time_deltas.seconds; });
+create_arc(110,    'minutes', 60,     100,  function() { return time_deltas.minutes; });
+create_arc(155,    'hours',   24,     100,  function() { return time_deltas.hours; });
+create_arc(200,    'days',    7,      100,  function() { return time_deltas.days; });
+create_arc(245,    'weeks',   4,      1000, function() { return time_deltas.weeks; });
+create_arc(290,    'months',  12,     1000, function() { return time_deltas.months; });
+create_arc(335,    'years',   85,     1000, function() { return time_deltas.years; });
 
 // setInterval(function (){
 //   document.title = [years(), months(), weeks(), days(), hours(), minutes(), seconds() ].join(':');
