@@ -99,8 +99,6 @@ body.dark { background:black; }
     <script>
 
 var ref_date = new Date('Wed Jan 29 2014 18:17:00 GMT-0800 (PST)');
-// ref_date = new Date('2000-05-17T00:00:00Z');
-// ref_date = new Date('1983-05-17T03:00:00Z');
 
 var qs = document.location.search.toLowerCase();
 var meta_apple_mobile_web_app_status_bar_style = document.createElement('meta');
@@ -404,6 +402,17 @@ function time_diff(date1, date2) {
 
   D.weeks = Math.floor(t / WEEK);
   t -= D.weeks * WEEK;
+  if (D.weeks === 4) {
+    // Special case where a month has more than 4 weeks.
+    // We inaccurately—but humanly—count that as "a month".
+    ++D.months;
+    D.weeks = 0;
+    if (D.months === 12) {
+      ++D.years;
+      D.months = 0;
+    }
+  }
+
   D.days = Math.floor(t / DAY);
   t -= D.days * DAY;
   D.hours = Math.floor(t / HOUR);
@@ -416,6 +425,8 @@ function time_diff(date1, date2) {
 
   return D;
 }
+
+window.T = function() { return time_diff(ref_date, new Date); };
 
 
 var time_deltas = {};
