@@ -402,17 +402,6 @@ function time_diff(date1, date2) {
 
   D.weeks = Math.floor(t / WEEK);
   t -= D.weeks * WEEK;
-  if (D.weeks === 4) {
-    // Special case where a month has more than 4 weeks.
-    // We inaccurately—but humanly—count that as "a month".
-    ++D.months;
-    D.weeks = 0;
-    if (D.months === 12) {
-      ++D.years;
-      D.months = 0;
-    }
-  }
-
   D.days = Math.floor(t / DAY);
   t -= D.days * DAY;
   D.hours = Math.floor(t / HOUR);
@@ -426,8 +415,6 @@ function time_diff(date1, date2) {
   return D;
 }
 
-window.T = function() { return time_diff(ref_date, new Date); };
-
 
 var time_deltas = {};
 function update_time_deltas() {
@@ -440,7 +427,7 @@ create_arc(65,     'seconds', 60,     100,  function() { return time_deltas.seco
 create_arc(110,    'minutes', 60,     100,  function() { return time_deltas.minutes; });
 create_arc(155,    'hours',   24,     100,  function() { return time_deltas.hours; });
 create_arc(200,    'days',    7,      100,  function() { return time_deltas.days; });
-create_arc(245,    'weeks',   4,      1000, function() { return time_deltas.weeks; });
+create_arc(245,    'weeks',   5,      1000, function() { return time_deltas.weeks; });
 create_arc(290,    'months',  12,     1000, function() { return time_deltas.months; });
 create_arc(335,    'years',   85,     1000, function() { return time_deltas.years; });
 
