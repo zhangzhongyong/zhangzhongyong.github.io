@@ -17,7 +17,7 @@ More information can be found through [LinkedIn](http://www.linkedin.com/in/rasm
 I work for & ♥ [Dropbox](http://dropbox.com/)
 
 - [Read more about my work with Spotify &rarr;](/about/spotify/)
-- [Some of my favorite technical papers &rarr;](https://www.dropbox.com/sh/k2m3d7d87lbqqri/qk_8rRM-hY/Favorite%20technical%20papers)
+- [Some of my favorite technical papers &rarr;](https://www.dropbox.com/sh/yukxm18b9gm4b2y/AACEeiII_4fZEjqi0GWiP_lOa/Favorite%20technical%20papers)
 
 
 ## Elsewhere
