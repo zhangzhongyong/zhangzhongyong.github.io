@@ -4,8 +4,7 @@ fb_comments: 3
 title: Projects
 ---
 
-<small>*Not in any sane or particular order*</small>
-
+- [Gotalk](http://rsms.me/2015/01/21/gotalk.html) — makes it easy for programs to talk with one another over the internet.
 - [Sol](/2012/10/14/sol-a-sunny-little-virtual-machine) — educational virtual machine implementation.  ([GH](https://github.com/rsms/sol))
 - [Hue](/2012/05/14/hue) — a functional programming language. ([GH](https://github.com/rsms/hue))
 - [PeerTalk](http://rsms.me/peertalk/) — a small iOS and OS X Cocoa library for communicating over USB and TCP.
