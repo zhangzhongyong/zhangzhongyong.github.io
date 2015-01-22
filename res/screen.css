@@ -1,7 +1,7 @@
 @viewport {
   width: device-width;
 }
-@font-face {
+/*@font-face {
   font-family: 'M+ 1mn';
   font-style: normal;
   font-weight: 300;
@@ -11,10 +11,10 @@
 @font-face {
   font-family: 'M+ 1mn';
   font-style: normal;
-  font-weight: 500;
+  font-weight: 600;
   src: local('mplus-1mn-regular'), local('M+ 1mn regular'), url('/res/mplus-1mn-regular.ttf')
        format('truetype');
-}
+}*/
 
 /* Base */
 * { margin:0; padding:0; font-family:inherit; }
@@ -29,7 +29,7 @@ body {
   zoom:0.8;
   -webkit-text-size-adjust: 100%;
   -ms-text-size-adjust: 100%;
-  -webkit-font-smoothing: antialiased;
+  -webkit-font-smoothing: subpixel-antialiased;
 }
 
 div.breaker { clear:both; }
@@ -37,8 +37,9 @@ div.breaker { clear:both; }
 
 p, ul, ol, pre, blockquote, hr, object { margin: 1em 0; }
 pre, code, tt {
-  -webkit-font-smoothing: subpixel-antialiased;
-  font-family: 'M+ 1mn', 'Consolas', monospace;
+  /*-webkit-font-smoothing: subpixel-antialiased;*/
+  /*font-family: 'M+ 1mn', 'Consolas', monospace;*/
+  font-family: 'Ubuntu Mono', 'Consolas', monospace;
   font-weight:300;
   font-size: 12px;
 }
@@ -51,6 +52,7 @@ h1,h2,h3,h4,h5,h6 {
   font-weight:normal;
   color:#040404;
   margin: 1.618em 0 1em 0;
+  /*-webkit-font-smoothing: antialiased;*/
   text-rendering: optimizelegibility;
 }
 h1,h2 { font-size: 200%; }
@@ -164,18 +166,18 @@ div.content.photo {
   }
   div.content div.quotation blockquote { margin-left:-30px; }
   div.content pre {
-    /*background-color:#f9f8fa;
-    border-top: 1px solid #f0f2f4;
-    border-bottom: 1px solid #f0f2f4;
-    padding:0.4em 0 0.4em 60px;
-    margin-left:-60px;*/
-    
-    border-left:10px solid #C6F9FC;
-    margin-left:-60px;
-    padding:0.1em 0 0.4em 50px;
-    /*background-color:#faf9f8;*/
-    
+    line-height:1.3;
+    background-color:transparent;
     overflow-x: auto;
+
+    background-color:#f2f2f2;
+    border-radius: 5px;
+    padding:0.6em 20px 0.6em 10px;
+
+    /*display: -webkit-flex; display: flex;
+    -webkit-flex-direction: row; flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;*/
   }
   div.content code {
     background-color: #f6f9fa;
@@ -187,8 +189,16 @@ div.content.photo {
   div.content pre > code {
     padding:0;
     background-color:transparent;
-    border:none;
     border-radius: none;
+    /*border:none;*/
+
+    /*background-color:#f2f2f2;
+    border-radius: 5px;
+    padding:0.6em 20px 0.6em 10px;*/
+
+    /*border-top: 1px solid #f0f2f4;
+    border-bottom: 1px solid #f0f2f4;*/
+    /*margin-left:-10px;*/
   }
   div.content *:target { background:#fe0; }
   div.content sup:target a { padding:2px 5px; }

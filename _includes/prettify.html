@@ -20,6 +20,9 @@
           }
         }
       }
+      if (!lang) {
+        lang = cn.className;
+      }
       n.setAttribute('class', 'prettyprint'+(lang ? ' lang-' + lang : ''));
     }
   }
