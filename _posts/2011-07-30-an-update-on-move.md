@@ -5,7 +5,7 @@ tags: move, programming
 fb_comments: 25
 ---
 
-<img src="http://movelang.org/res/logo.png" align="right" width="256">A [few months back](http://rsms.me/2011/03/02/move-programming-language.html) I wrote a programming language called [Move](http://movelang.org/). Before the advent of Move, JavaScript (on Node.js) was my universal language of choice. Two years earlier it was Python. During the last four months I have basically been exclusive with Move -- quick hacks, data mangling scripts, network services, websites, iphone apps... you name it. What initially was a fun week of language research and interviews with people, turned into a very usable programming language and library.
+A [few months back](http://rsms.me/2011/03/02/move-programming-language.html) I wrote a programming language called [Move](https://github.com/rsms/move). Before the advent of Move, JavaScript (on Node.js) was my universal language of choice. Two years earlier it was Python. During the last four months I have basically been exclusive with Move -- quick hacks, data mangling scripts, network services, websites, iphone apps... you name it. What initially was a fun week of language research and interviews with people, turned into a very usable programming language and library.
 
 Today Move has evolved -- from what was first released on March 2, 2011 -- over nine releases, making the language even simpler and listening to user feedback.
 
@@ -85,7 +85,7 @@ It's completely optional to use these convenience keywords.
 
 Here's a more complete example of modules in a web browser environment:
 
-    <script src="http://movelang.org/move.js"></script>
+    <script src="move.js"></script>
     <script type="text/move" module="bar">
     import foo, capitalize
     export sayHello = ^(name) {
@@ -134,7 +134,7 @@ This means that *any object* can support slices by simply implementing both or o
 
 This is a pretty awesome feature: HTML literals.
 
-    url = "http://movelang.org/res/logo.png"
+    url = "logo.png"
     img = <img src="{url}"/>
     img.width = 500
     document.body.appendChild img
@@ -268,11 +268,4 @@ Create a stand-alone web-browser compatible JavaScript file from one or more sou
 
 This article and examples in it assumes the latest release of Move at the time of publishing this (0.4.2).
 
-More information on Move can be found at [movelang.org](http://movelang.org/)
-
-
-
-
-
-
-
+More information on Move can be found at movelang.org (*website no longer exists*)

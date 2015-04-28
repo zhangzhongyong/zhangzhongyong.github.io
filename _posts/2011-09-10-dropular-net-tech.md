@@ -95,7 +95,7 @@ Since [Step 3], point 4 and forward does not require user input, re-authenticati
 
 What we did was to have a mind set as if we where writing a desktop application — we define logical components in folders and files that reflect the structure of these components. We then *process*, or *compile*, these sources into machine-and-network optimized code (HTML, CSS & JavaScript), just like you do with "regular" software development.
 
-A nice side-effect of having an intermediate "compile" step is that you can write your source code in whatever language suits you and your project — your no longer limited to the languages and coding styles dictated by web browsers. For instance, you can define your layout code in [LESS](http://lesscss.org/) instead of CSS and write your logic in [Move](http://movelang.org/) instead of JavaScript.
+A nice side-effect of having an intermediate "compile" step is that you can write your source code in whatever language suits you and your project — your no longer limited to the languages and coding styles dictated by web browsers. For instance, you can define your layout code in [LESS](http://lesscss.org/) instead of CSS and write your logic in [Move](https://github.com/rsms/move) instead of JavaScript.
 
 ### Downsides to a "compiling" approach
 

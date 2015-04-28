@@ -14,7 +14,7 @@ As I'm very interested in human-computer interaction, programming languages and 
 
 So I spent a full Sunday two weeks ago punching out a prototype implementation which I was so happy with that I've decided to continue working with this idea and today I finally wrapped everything together with documentation, a guide and throughly tested code.
 
-I call it [Move](http://movelang.org/). Here is a simple program which print "Hello John" three times:
+I call it [Move](https://github.com/rsms/move). Here is a simple program which print "Hello John" three times:
 
     hello = ^(name){ "Hello "+name }
     repeat {times: 3} ^{
@@ -23,7 +23,7 @@ I call it [Move](http://movelang.org/). Here is a simple program which print "He
 
 The language is now stable and will probably not change (except for bugs and runtime library expansion) in the near future. JavaScript is normally my "universal", "go-to" language for everything from crunching log files and doing simple math to writing small networked programs and web sites. However, during these two weeks I've used Move instead and it just feels right: I get done quicker, less boiler plate code, easier to read, etc.
 
-[![movelangdotorg](http://farm6.static.flickr.com/5214/5492500401_54b711ac5e_o.png)](http://movelang.org/)
+[movelangdotorg](http://farm6.static.flickr.com/5214/5492500401_54b711ac5e_o.png)
 
 Move *compiles down to optimized JavaScript* and can run on any ES3 or higher speced JS platform (like a web browser or Node.js). Move also contains a runtime library which not only provides a few carefully crafted functions but also *normalizes the JS environment to the ES5 standard*, relieving you from feature-testing for "Object.create" or doing work-arounds for things like "Array.isArray". Move is open source under a permissive MIT license and available at [https://github.com/rsms/move](https://github.com/rsms/move).
 
@@ -109,13 +109,13 @@ Which can also be written like this:
 
 Move comes with a few but carefully crafted built-in functions (which in true Move style can be manipulated or replaced at will):
 
-- [`create`](http://movelang.org/#create) — create new objects based on other objects (object-oriented programming using differential inheritance).
-- [`extend`](http://movelang.org/#extend) — extend an existing object by shallow-copying properties from another object.
-- [`print`](http://movelang.org/#print) — visualize any value.
-- [`repeat`](http://movelang.org/#repeat) — repeat something (a friendlier approach to "for (i = 0; i < ..." and "while (...".
-- [`after`](http://movelang.org/#after) — perform something after a certain point in time.
+- `create` — create new objects based on other objects (object-oriented programming using differential inheritance).
+- `extend` — extend an existing object by shallow-copying properties from another object.
+- `print` — visualize any value.
+- `repeat` — repeat something (a friendlier approach to "for (i = 0; i < ..." and "while (...".
+- `after` — perform something after a certain point in time.
 
-[The "create" function](http://movelang.org/#create) is used to create new objects semantically based on other objects, achieving a very straight-forward approach to object-oriented programming:
+The "create" function is used to create new objects semantically based on other objects, achieving a very straight-forward approach to object-oriented programming:
 
     animal = { type: "an animal",
                toString: ^{ "I'm " + @type } }
@@ -129,7 +129,7 @@ Read more about [Prototype-based programming](http://en.wikipedia.org/wiki/Proto
 
 ## Try to Move
 
-I recommend checking out the [website at movelang.org](http://movelang.org/) (albeit being a work in progress) as well as the interactive console, perfect for playing around with Move, at [movelang.org/try](http://movelang.org/try/).
+I recommend checking out the website at movelang.org (*website no longer exists*) (albeit being a work in progress) as well as the interactive console, perfect for playing around with Move, at movelang.org/try.
 
 For TextMate junkies, there's also a Move bundle with syntax highlighting, commands for running programs, displaying compiled JavaScript code, AST viewer, etc. [Grab a snapshot of @master](https://github.com/rsms/move/zipball/master) and find Move.tmbundle in the "extras" directory.
 

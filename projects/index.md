@@ -10,7 +10,7 @@ title: Projects
 - [Hue](/2012/05/14/hue) — a functional programming language. ([GH](https://github.com/rsms/hue))
 - [PeerTalk](http://rsms.me/peertalk/) — a small iOS and OS X Cocoa library for communicating over USB and TCP.
 - [UILayer](http://rsms.me/uilayer/) — an API on top of the WebKit DOM for working with the concept of layers. High performance UI rendering and animation.
-- [Move](http://movelang.org/) — a simple programming language intended for the young generation
+- [Move](https://github.com/rsms/move) — a simple programming language
 - [Fnews](/projects/fnews/) — dust off your iPad and use it as a pretty Facebook news feed "photo frame"
 - [Kod](http://github.com/rsms/kod) — programmers' editor for OS X
 - [Spotify](/about/spotify/) — the best music service in the world
