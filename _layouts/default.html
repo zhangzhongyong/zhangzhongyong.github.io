@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html lang="en" prefix="og: http://ogp.me/ns#">
+<html lang="zh-cmn" prefix="og: http://ogp.me/ns#">
   <head>
     <meta charset="utf-8">
     <title>{% if page.title %}{{ page.title }} &mdash; {% endif %}Rasmus Andersson</title>
@@ -55,24 +55,8 @@
     {% endif %}
   </head>
   <body{% if page.wide_layout %} class="wide"{% endif %}>
-    <!--script>/*
-      var s;
-      if (document.location.hostname === 'rsms.me') {
-        s = document.createElement('script');
-        s.async = true;
-        s.src = "http://connect.facebook.net/en_US/all.js#appId=38027689216&xfbml=1";
-        document.getElementsByTagName('head')[0].appendChild(s);
-      }
-      
-      if (window.navigator.userAgent.indexOf('iPad') != -1) {
-        document.documentElement.className = 'ios ipad';
-        window.rsmsHostIsIOS = 'ipad';
-      } else if (window.navigator.userAgent.indexOf('iPhone') != -1) {
-        document.documentElement.className = 'ios iphone';
-        window.rsmsHostIsIOS = 'iphone';
-      }
-    */</script>
-    <div id="fb-root"></div><script></script-->
+  
+
     <iframe id="sidebar"></iframe>
     <header>
       <h1 class="logo" onclick="document.location.href='/';"><a href="/"><img src="/res/signature-2-2.png" width="160" height="50" alt="Signature"></a></h1>
@@ -80,19 +64,13 @@
         <li><a href="/photos/"{% if page.url contains "/photos/" %}class="active"{% endif %} title="A selection of recent photography">Photography</a></li>
         <li><a href="/projects/"{% if page.url contains "/projects/" %}class="active"{% endif %} title="Projects I am or was involved in">Projects</a></li>
         <li><a href="/archive/"{% if page.url contains "/archive/" %}class="active"{% endif %} title="Archived articles">Archive</a></li>
-        <li><a href="/about/"{% if page.url contains "/about/" %}class="active"{% endif %}>About me</a></li>
+        <li><a href="/about/"{% if page.url contains "/about/" %}class="active"{% endif %}> About me </a></li>
+        <li><a href="/cars/"{% if page.url contains "/cars/" %}class="active"{% endif %}> Cars </a></li>
       </ul>
     </header>
-    <!--div class="wrapper content"-->
+
+
       {{ content }}
-    <!--/div-->
-    
-    {% if page.fb_comments or page.comments %}
-    <!--div class="content sub">
-      <h2 id="comments">Comments</h2>
-      <div class="fb-comments" data-href="http://rsms.me{{ page.url }}" data-num-posts="{{ page.fb_comments }}" data-width="550" data-font="arial"></div>
-    </div-->
-    {% endif %}
     
     {% if paginator.page %}
     <div id="paginator" class="content">

@@ -7,6 +7,8 @@ title: Résumé
 
 ## Introduction
 
+Frankkkkkkkkkk  章仲勇
+
 I'm a Swede who started my first job as a designer in 1998. I've since worked as a creative & art director, and photographer in a number of different companies — large and small, my own and others — including Spray, Lear Corporation, Notion and Spotify. More information can be found on LinkedIn.
 
 ## Spotify
