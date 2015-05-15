@@ -6,7 +6,7 @@ title: About
 
 <img src="https://c2.staticflickr.com/6/5334/17514935926_5299f33c25.jpg" width="200" height="170" align="right">
 
-My name is Zhang Zhongyong. I am a data science enthusiast and also really enjoy my life, with passion on programming as well as arbitrage strategies.
+My name is Zhang Zhongyong. I am a data science enthusiast, with passion on programming as well as statistic theory.
 ## Elsewhere
 
 
